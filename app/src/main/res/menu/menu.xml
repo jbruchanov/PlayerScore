@@ -3,17 +3,17 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/add"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/delete"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:icon="@drawable/ic_remove_white_24dp"
         android:title="@string/delete"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/reset"
-        android:icon="@android:drawable/ic_menu_rotate"
+        android:icon="@drawable/ic_undo_white_24dp"
         android:title="@string/reset"
         app:showAsAction="ifRoom"/>
 </menu>
