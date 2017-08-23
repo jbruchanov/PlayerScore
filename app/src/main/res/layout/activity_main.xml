@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:keepScreenOn="true"
     tools:context="com.scurab.android.playerscore.MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -17,9 +18,10 @@
 
     <EditText
         android:id="@+id/input"
-        android:digits="-=0123456789"
-        android:inputType="number"
-        android:imeOptions="actionGo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:digits="-=0123456789"
+        android:maxLength="5"
+        android:imeOptions="actionGo"
+        android:inputType="number" />
 </LinearLayout>

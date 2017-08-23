@@ -3,6 +3,7 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
+    <string name="name">Name</string>
     <string name="ru_sure">Are you sure ?</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancel</string>

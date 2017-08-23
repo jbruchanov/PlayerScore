@@ -31,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
+        android:textSize="@dimen/text_player"
         tools:text="50000"
         />
 </LinearLayout>

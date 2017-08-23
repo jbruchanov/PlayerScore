@@ -1,21 +1,27 @@
 package com.scurab.android.playerscore
 
+import android.content.Context
+import android.inputmethodservice.InputMethodService
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 /**
  * Created by JBruchanov on 23/08/2017.
  */
-class PlayersAdapter : RecyclerView.Adapter<PlayerViewHolder>() {
+class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolder>() {
 
     private val data: MutableList<Player> = mutableListOf()
     private lateinit var layoutInflater: LayoutInflater
-
+    private val numberFormat : DecimalFormat
     val items : List<Player> = data
     var selectedIndex: Int = -1
         set(value) {
@@ -27,7 +33,21 @@ class PlayersAdapter : RecyclerView.Adapter<PlayerViewHolder>() {
                     notifyItemChanged(field)
                 }
             }
+            if (old == -1 && value != -1) {
+                input.requestFocus()
+                val imm = input.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT)
+            } else if (old != -1 && value == -1) {
+                val imm = input.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(input.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            }
         }
+
+    init {
+        var symbols = DecimalFormatSymbols()
+        symbols.groupingSeparator = ' '
+        numberFormat = DecimalFormat("###,###", symbols)
+    }
 
     fun selectedPlayer(): Player? = if (selectedIndex != -1) data[selectedIndex] else null
 
@@ -45,7 +65,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayerViewHolder>() {
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player = data[position]
         holder.playerName.text = player.name
-        holder.score.text = player.score.toString()
+        holder.score.text = numberFormat.format(player.score)
         holder.itemView.isSelected = selectedIndex == position
     }
 

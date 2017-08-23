@@ -3,4 +3,8 @@
     <string name="add">Přidat</string>
     <string name="delete">Smazat</string>
     <string name="reset">Reset</string>
+    <string name="name">Jméno</string>
+    <string name="ru_sure">Skutečně ?</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Nééé</string>
 </resources>
