@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -21,14 +20,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
 }
+
+kapt {
+    generateStubs = true
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.0.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    def supportLib = "26.0.0"
+    def butterKnife = "8.7.0"
+    def assertJ = "1.1.1"
+
+    implementation "com.android.support:appcompat-v7:$supportLib"
+    implementation "com.android.support:design:${supportLib}"
+    implementation "com.android.support:support-v4:$supportLib"
+
+    kapt "com.jakewharton:butterknife-compiler:$butterKnife"
+    implementation "com.jakewharton:butterknife:$butterKnife"
+
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.0'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.0'
+    testImplementation "com.squareup.assertj:assertj-android:$assertJ"
+    testImplementation "com.squareup.assertj:assertj-android-design:$assertJ"
+    testImplementation "com.squareup.assertj:assertj-android-support-v4:$assertJ"
+    testImplementation "org.robolectric:robolectric:3.4.2"
+    testImplementation "org.mockito:mockito-core:2.8.47"
+
 }
