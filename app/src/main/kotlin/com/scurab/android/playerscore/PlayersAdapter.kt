@@ -95,6 +95,9 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
         if (index != -1) {
             data.remove(player)
             notifyItemRemoved(index)
+            if (index == selectedIndex) {
+                selectedIndex = -1
+            }
         }
     }
 
