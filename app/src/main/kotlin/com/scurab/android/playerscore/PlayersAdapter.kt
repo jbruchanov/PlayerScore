@@ -16,6 +16,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayerViewHolder>() {
     private val data: MutableList<Player> = mutableListOf()
     private lateinit var layoutInflater: LayoutInflater
 
+    val items : List<Player> = data
     var selectedIndex: Int = -1
         set(value) {
             val old = field
