@@ -1,12 +1,16 @@
 package com.scurab.android.playerscore
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -22,6 +26,8 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
     private lateinit var layoutInflater: LayoutInflater
     private val numberFormat : DecimalFormat
     val items : List<Player> = data
+    val colors: MutableList<Int>
+
     var selectedIndex: Int = -1
         set(value) {
             val old = field
@@ -46,6 +52,12 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
         var symbols = DecimalFormatSymbols()
         symbols.groupingSeparator = ' '
         numberFormat = DecimalFormat("###,###", symbols)
+
+        val ta = input.resources.obtainTypedArray(R.array.colors)
+        colors = mutableListOf()
+        for (i in 0..ta.length() - 1) {
+            colors.add(ta.getColor(i, 0))
+        }
     }
 
     fun selectedPlayer(): Player? = if (selectedIndex != -1) data[selectedIndex] else null
@@ -66,6 +78,7 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
         holder.playerName.text = player.name
         holder.score.text = numberFormat.format(player.score)
         holder.itemView.isSelected = selectedIndex == position
+        holder.background.setColor(colors[player.colorIndex])
         val zeros = player.lastZeros()
         when (zeros) {
             2 -> {
@@ -118,12 +131,15 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
 }
 
 class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    @BindView(R.id.avatar) lateinit var avatar: ImageView
     @BindView(R.id.player_name) lateinit var playerName: TextView
     @BindView(R.id.score) lateinit var score: TextView
     @BindView(R.id.point1) lateinit var point1: View
     @BindView(R.id.point2) lateinit var point2: View
+    var background: GradientDrawable
 
     init {
         ButterKnife.bind(this, view)
+        background = (avatar.drawable as? LayerDrawable)?.findDrawableByLayerId(R.id.background) as GradientDrawable
     }
 }

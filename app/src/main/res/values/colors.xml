@@ -7,4 +7,16 @@
     <color name="row_selected">#20FFFFFF</color>
     <color name="row_pressed">#40FFFFFF</color>
     <color name="red">#FF0000</color>
+
+    <array name="colors">
+        <item>#8B0000</item>
+        <item>#FF8C00</item>
+        <item>#FFD700</item>
+        <item>#2F4F2F</item>
+        <item>#000080</item>
+        <item>#4B0082</item>
+        <item>#FF00FF</item>
+        <item>#FF1493</item>
+        <item>#F5F5DC</item>
+    </array>
 </resources>

@@ -22,6 +22,7 @@ class Player {
             }
             observers.forEach { it.invoke(this) }
         }
+    var colorIndex = 0
 
     private val scoreHistory : Stack<Long> = Stack()
 

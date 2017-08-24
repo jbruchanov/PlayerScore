@@ -19,7 +19,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
-
+import java.util.*
 
 
 private val Players = "Players"
@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     val gson: Gson = Gson()
     lateinit var sharedPrefs: SharedPreferences
     lateinit var adapter: PlayersAdapter
+    var numberOfColors : Int = 0
+    val random = Random()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         sharedPrefs = getSharedPreferences("PlayerScore", Context.MODE_PRIVATE)
+        numberOfColors = resources.obtainTypedArray(R.array.colors).length()
 
         ButterKnife.bind(this)
 
@@ -112,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton(R.string.action_ok) { d, i ->
                     val player = Player(input.text.toString(), 0)
                     player.clear()
+                    player.colorIndex = random.nextInt(numberOfColors)
                     adapter.addPlayer(player)
                 }
                 .setNegativeButton(R.string.action_cancel, null)
