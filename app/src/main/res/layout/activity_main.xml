@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:digits="-=0123456789"
-        android:maxLength="5"
+        android:maxLength="4"
         android:imeOptions="actionGo"
         android:inputType="number" />
 </LinearLayout>

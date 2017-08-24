@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff8400</color>
 
-    <color name="row_selected">#80ff8400</color>
-    <color name="row_pressed">#A0ff8400</color>
+    <color name="row_selected">#20FFFFFF</color>
+    <color name="row_pressed">#40FFFFFF</color>
     <color name="red">#FF0000</color>
 </resources>
