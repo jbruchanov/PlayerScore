@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.Menu
@@ -59,9 +60,9 @@ class MainActivity : AppCompatActivity() {
                 val selectedPlayer = adapter.selectedPlayer()
                 if (selectedPlayer != null) {
                     val int = textView.text.toString().toIntOrNull() ?: 0
-                    if (int !in 1..299) {//min value is 0 or 300
+                    if (int !in 1..299 && textView.text.isNotEmpty()) {//min value is 0 or 300
                         selectedPlayer.score += int
-                        recyclerView.smoothScrollToPosition(adapter.selectedIndex)
+                        recyclerView.post { recyclerView.smoothScrollToPosition(adapter.selectedIndex) }
                         textView.text = ""
                         if (selectedPlayer.lastZeros() == 3) {
                             selectedPlayer.clear()

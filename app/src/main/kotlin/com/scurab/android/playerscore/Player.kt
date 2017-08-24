@@ -15,7 +15,9 @@ class Player {
     var name: String = ""
     var score: Long = 0
         set(value) {
-            addToStack(if (value > 0) value - field else 0)
+            if (value >= 0) {
+                addToStack(if (value > 0) value - field else 0)
+            }
             field = value
             if (lastThreeScoreEquals(0)) {
                 field = 0
