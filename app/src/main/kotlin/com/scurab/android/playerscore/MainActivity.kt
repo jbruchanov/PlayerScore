@@ -56,14 +56,15 @@ class MainActivity : AppCompatActivity() {
                     val int = textView.text.toString().toIntOrNull() ?: 0
                     if (int !in 1..299) {//min value is 0 or 300
                         selectedPlayer.score += int
-                        adapter.selectedIndex++
                         recyclerView.smoothScrollToPosition(adapter.selectedIndex)
                         textView.text = ""
                         if (selectedPlayer.lastZeros() == 3) {
                             selectedPlayer.clear()
                         }
-                        if (selectedPlayer.score > 10000) {
+                        if (selectedPlayer.score >= 10000) {
                             onWinner(selectedPlayer)
+                        } else {
+                            adapter.selectedIndex++
                         }
                     }
                 }
