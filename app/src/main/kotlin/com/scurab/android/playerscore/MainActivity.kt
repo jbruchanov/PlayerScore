@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     if (player != null) {
                         player.clear()
                     } else {
-                        adapter.items.forEach { it.score = 0 }
+                        adapter.items.forEach { it.clear() }
                         adapter.selectedIndex = -1
                     }
                 }
