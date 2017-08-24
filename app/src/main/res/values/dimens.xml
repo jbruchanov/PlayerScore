@@ -4,4 +4,5 @@
     <dimen name="player_row_min_height">64dp</dimen>
     <dimen name="text_player">24sp</dimen>
     <dimen name="point_size">10dp</dimen>
+    <dimen name="input">22sp</dimen>
 </resources>

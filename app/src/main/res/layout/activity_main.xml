@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:keepScreenOn="true"
+    android:orientation="vertical"
     tools:context="com.scurab.android.playerscore.MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -20,8 +20,10 @@
         android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/gap_normal"
         android:digits="-=0123456789"
-        android:maxLength="4"
         android:imeOptions="actionGo"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="4"
+        android:textSize="@dimen/input"/>
 </LinearLayout>

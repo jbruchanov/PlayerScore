@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.gson.Gson
@@ -96,10 +98,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onAddPlayer() {
-        val input = EditText(this)
+        val input = EditText(this).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimensionPixelSize(R.dimen.input).toFloat())
+        }
+        val fl = FrameLayout(this).apply {
+            var pad = resources.getDimensionPixelSize(R.dimen.gap_normal)
+            setPadding(pad, pad, pad, pad)
+            addView(input)
+        }
         AlertDialog.Builder(this)
                 .setTitle(R.string.name)
-                .setView(input)
+                .setView(fl)
                 .setPositiveButton(R.string.action_ok) { d, i ->
                     val player = Player(input.text.toString(), 0)
                     player.clear()
