@@ -15,13 +15,11 @@ class Player {
     var name: String = ""
     var score: Long = 0
         set(value) {
-            if (value > 0) {
-                addToStack(value - field)
-            }
+            addToStack(if (value > 0) value - field else 0)
             field = value
-//            if (lastThreeScoreEquals(0)) {
-//                field = 0
-//            }
+            if (lastThreeScoreEquals(0)) {
+                field = 0
+            }
             observers.forEach { it.invoke(this) }
         }
 
@@ -49,9 +47,24 @@ class Player {
 
     private fun addToStack(value: Long) {
         scoreHistory.push(value)
-//        while (scoreHistory.size > ScoreHistoryLimit) {
-//            scoreHistory.removeElementAt(scoreHistory.size - 1)
-//        }
+        while (scoreHistory.size > ScoreHistoryLimit) {
+            scoreHistory.removeElementAt(0)
+        }
+    }
+
+    fun clear() {
+        score = 0
+        scoreHistory.clear()
+    }
+
+    fun lastZeros() : Int {
+        var zeros = 0
+        if (scoreHistory.size > 0) {
+            zeros = ((Math.min(scoreHistory.size, ScoreHistoryLimit) - 1) downTo 0 step 1)
+                    .takeWhile { scoreHistory[it] == 0L }
+                    .count()
+        }
+        return zeros
     }
 
     fun lastThreeScoreEquals(value: Long): Boolean {

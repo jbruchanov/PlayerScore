@@ -3,11 +3,11 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@drawable/item_background"
               android:divider="@drawable/divider_vertical"
               android:minHeight="@dimen/player_row_min_height"
               android:orientation="horizontal"
               android:padding="@dimen/gap_normal"
-              android:background="@drawable/item_background"
               android:showDividers="middle">
 
     <ImageView
@@ -34,4 +34,32 @@
         android:textSize="@dimen/text_player"
         tools:text="50000"
         />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:divider="@drawable/divider_horizontal"
+        android:gravity="center_vertical"
+        android:minWidth="@dimen/point_size"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <ImageView
+            android:id="@+id/point1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/point"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+        <ImageView
+            android:id="@+id/point2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/point"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+    </LinearLayout>
 </LinearLayout>

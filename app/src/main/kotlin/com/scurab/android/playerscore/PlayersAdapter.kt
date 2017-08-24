@@ -1,7 +1,6 @@
 package com.scurab.android.playerscore
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -67,6 +66,18 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
         holder.playerName.text = player.name
         holder.score.text = numberFormat.format(player.score)
         holder.itemView.isSelected = selectedIndex == position
+        val zeros = player.lastZeros()
+        when (zeros) {
+            2 -> {
+                holder.point1.visibility = View.VISIBLE; holder.point2.visibility = View.VISIBLE
+            }
+            1 -> {
+                holder.point1.visibility = View.VISIBLE; holder.point2.visibility = View.GONE
+            }
+            else -> {
+                holder.point1.visibility = View.GONE; holder.point2.visibility = View.GONE
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
@@ -109,6 +120,8 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
 class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     @BindView(R.id.player_name) lateinit var playerName: TextView
     @BindView(R.id.score) lateinit var score: TextView
+    @BindView(R.id.point1) lateinit var point1: View
+    @BindView(R.id.point2) lateinit var point2: View
 
     init {
         ButterKnife.bind(this, view)

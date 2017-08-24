@@ -54,14 +54,30 @@ class MainActivity : AppCompatActivity() {
                 val selectedPlayer = adapter.selectedPlayer()
                 if (selectedPlayer != null) {
                     val int = textView.text.toString().toIntOrNull() ?: 0
-                    selectedPlayer.score += int
-                    adapter.selectedIndex++
-                    recyclerView.smoothScrollToPosition(adapter.selectedIndex)
-                    textView.text = ""
+                    if (int !in 1..299) {//min value is 0 or 300
+                        selectedPlayer.score += int
+                        adapter.selectedIndex++
+                        recyclerView.smoothScrollToPosition(adapter.selectedIndex)
+                        textView.text = ""
+                        if (selectedPlayer.lastZeros() == 3) {
+                            selectedPlayer.clear()
+                        }
+                        if (selectedPlayer.score > 10000) {
+                            onWinner(selectedPlayer)
+                        }
+                    }
                 }
             }
             true
         }
+    }
+
+    fun onWinner(selectedPlayer: Player) {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.winner)
+                .setPositiveButton(R.string.action_ok, null)
+                .setNegativeButton(R.string.action_cancel, null)
+                .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -84,7 +100,9 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(R.string.name)
                 .setView(input)
                 .setPositiveButton(R.string.action_ok) { d, i ->
-                    adapter.addPlayer(Player(input.text.toString(), 0))
+                    val player = Player(input.text.toString(), 0)
+                    player.clear()
+                    adapter.addPlayer(player)
                 }
                 .setNegativeButton(R.string.action_cancel, null)
                 .show()
@@ -94,8 +112,13 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.ru_sure)
                 .setPositiveButton(R.string.action_ok) { d, i ->
-                    adapter.items.forEach { it.score = 0 }
-                    adapter.selectedIndex = 0
+                    val player = adapter.selectedPlayer()
+                    if (player != null) {
+                        player.clear()
+                    } else {
+                        adapter.items.forEach { it.score = 0 }
+                        adapter.selectedIndex = -1
+                    }
                 }
                 .setNegativeButton(R.string.action_cancel, null)
                 .show()
