@@ -1,7 +1,6 @@
 package com.scurab.android.playerscore
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.support.v7.widget.RecyclerView
@@ -20,6 +19,12 @@ import java.text.DecimalFormatSymbols
 /**
  * Created by JBruchanov on 23/08/2017.
  */
+
+private val INDEX_BELOW_3k = 0
+private val INDEX_BELOW_7k = 1
+private val INDEX_BELOW_10k = 2
+private val INDEX_ABOVE_10k = 3
+
 class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolder>() {
 
     private val data: MutableList<Player> = mutableListOf()
@@ -27,6 +32,7 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
     private val numberFormat : DecimalFormat
     val items : List<Player> = data
     val colors: MutableList<Int>
+    var scoreColors : Array<Int>
 
     var selectedIndex: Int = -1
         set(value) {
@@ -53,11 +59,18 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
         symbols.groupingSeparator = ' '
         numberFormat = DecimalFormat("###,###", symbols)
 
-        val ta = input.resources.obtainTypedArray(R.array.colors)
+        val res = input.resources
+        val ta = res.obtainTypedArray(R.array.colors)
         colors = mutableListOf()
         for (i in 0..ta.length() - 1) {
             colors.add(ta.getColor(i, 0))
         }
+
+        scoreColors =
+                arrayOf(res.getColor(R.color.score_low),
+                        res.getColor(R.color.score_mid),
+                        res.getColor(R.color.score_mid2),
+                        res.getColor(R.color.score_winning))
     }
 
     fun selectedPlayer(): Player? = if (selectedIndex != -1) data[selectedIndex] else null
@@ -91,6 +104,13 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
                 holder.point1.visibility = View.GONE; holder.point2.visibility = View.GONE
             }
         }
+        val scoreIndex = when (player.score) {
+            in Long.MIN_VALUE..3000 -> INDEX_BELOW_3k
+            in 3000..7000 -> INDEX_BELOW_7k
+            in 7000..9999 -> INDEX_BELOW_10k
+            else -> INDEX_ABOVE_10k
+        }
+        holder.score.setTextColor(scoreColors[scoreIndex])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {

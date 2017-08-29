@@ -2,11 +2,10 @@ package com.scurab.android.playerscore
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.Menu
@@ -16,9 +15,9 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.crashlytics.android.Crashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import java.util.*
 
@@ -67,10 +66,15 @@ class MainActivity : AppCompatActivity() {
                         if (selectedPlayer.lastZeros() == 3) {
                             selectedPlayer.clear()
                         }
-                        if (selectedPlayer.score >= 10000) {
-                            onWinner(selectedPlayer)
-                        } else {
-                            adapter.selectedIndex++
+                        adapter.selectedIndex++
+                        if (adapter.selectedIndex == 0) {
+                            adapter.items.maxBy { p -> p.score }
+                                    ?.let {
+                                        if (it.score >= 10000) {
+                                            onWinner(it)
+                                            adapter.selectedIndex = adapter.items.indexOf(it)
+                                        }
+                                    }
                         }
                     }
                 }
@@ -79,9 +83,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onWinner(selectedPlayer: Player) {
+    fun onWinner(player: Player) {
         AlertDialog.Builder(this)
                 .setTitle(R.string.winner)
+                .setMessage(player.name)
                 .setPositiveButton(R.string.action_ok, null)
                 .setNegativeButton(R.string.action_cancel, null)
                 .show()
