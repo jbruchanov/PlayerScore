@@ -7,12 +7,15 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
+import android.support.v7.widget.helper.ItemTouchUIUtil
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.crashlytics.android.Crashlytics
@@ -56,30 +59,51 @@ class MainActivity : AppCompatActivity() {
 
         input.setOnEditorActionListener { textView, keyCode, keyEvent ->
             if (keyCode == EditorInfo.IME_ACTION_GO) {
-                val selectedPlayer = adapter.selectedPlayer()
-                if (selectedPlayer != null) {
-                    val int = textView.text.toString().toIntOrNull() ?: 0
-                    if (int !in 1..299 && textView.text.isNotEmpty()) {//min value is 0 or 300
-                        selectedPlayer.score += int
-                        recyclerView.post { recyclerView.smoothScrollToPosition(adapter.selectedIndex) }
-                        textView.text = ""
-                        if (selectedPlayer.lastZeros() == 3) {
-                            selectedPlayer.clear()
-                        }
-                        adapter.selectedIndex++
-                        if (adapter.selectedIndex == 0) {
-                            adapter.items.maxBy { p -> p.score }
-                                    ?.let {
-                                        if (it.score >= 10000) {
-                                            onWinner(it)
-                                            adapter.selectedIndex = adapter.items.indexOf(it)
-                                        }
-                                    }
-                        }
-                    }
-                }
+                onActionGo(textView)
             }
             true
+        }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+            private var selectedPlayer : Player? = null
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removePlayer(adapter.items[viewHolder.adapterPosition])
+            }
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                selectedPlayer = adapter.selectedPlayer()
+                adapter.switchPosition(viewHolder.adapterPosition, target.adapterPosition)
+                selectedPlayer?.let {
+                    adapter.setSelectedIndex(adapter.items.indexOf(it), false)
+                }
+                return true
+            }
+        }).attachToRecyclerView(recyclerView)
+    }
+
+    fun onActionGo(textView: TextView) {
+        val selectedPlayer = adapter.selectedPlayer()
+        if (selectedPlayer != null) {
+            val int = textView.text.toString().toIntOrNull() ?: 0
+            if (int !in 1..299 && textView.text.isNotEmpty()) {//min value is 0 or 300
+                selectedPlayer.score += int
+                textView.text = ""
+                if (selectedPlayer.lastZeros() == 3) {
+                    selectedPlayer.clear()
+                }
+                adapter.setSelectedIndex((adapter.selectedIndex + 1) % adapter.items.count())
+                if (adapter.selectedIndex == 0) {
+                    adapter.items.maxBy { p -> p.score }
+                            ?.let {
+                                if (it.score >= 10000) {
+                                    onWinner(it)
+                                    adapter.setSelectedIndex(adapter.items.indexOf(it))
+                                }
+                            }
+                }
+                recyclerView.post { recyclerView.smoothScrollToPosition(Math.max(0, adapter.selectedIndex)) }
+            }
         }
     }
 
@@ -137,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                         player.clear()
                     } else {
                         adapter.items.forEach { it.clear() }
-                        adapter.selectedIndex = -1
+                        adapter.setSelectedIndex(-1)
                     }
                 }
                 .setNegativeButton(R.string.action_cancel, null)

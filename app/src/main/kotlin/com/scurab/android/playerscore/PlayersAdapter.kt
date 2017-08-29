@@ -35,13 +35,16 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
     var scoreColors : Array<Int>
 
     var selectedIndex: Int = -1
-        set(value) {
-            val old = field
-            field = if (value < itemCount) value else 0
-            if (old != field) {
+    private set
+
+    fun setSelectedIndex(value: Int, notify : Boolean = true){
+        val old = selectedIndex
+        selectedIndex = if (value < itemCount) value else -1
+        if (notify) {
+            if (old != selectedIndex) {
                 notifyItemChanged(old)
                 if (value != -1) {
-                    notifyItemChanged(field)
+                    notifyItemChanged(value)
                 }
             }
             if (old == -1 && value != -1) {
@@ -53,6 +56,7 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
                 imm.hideSoftInputFromWindow(input.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
             }
         }
+    }
 
     init {
         var symbols = DecimalFormatSymbols()
@@ -116,7 +120,7 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
         return PlayerViewHolder(layoutInflater.inflate(R.layout.item_player, parent, false)).apply {
             itemView.setOnClickListener {
-                selectedIndex = if (selectedIndex == adapterPosition) -1 else adapterPosition
+                setSelectedIndex(if (selectedIndex == adapterPosition) -1 else adapterPosition)
             }
         }
     }
@@ -147,6 +151,18 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
 
     fun onPlayerUpdated(player: Player) {
         notifyItemChanged(data.indexOf(player))
+    }
+
+    fun switchPosition(pos1: Int, pos2: Int) {
+        val selectedPlayer = selectedPlayer()
+        val o1 = data[pos1]
+        val o2 = data[pos2]
+        data[pos1] = o2
+        data[pos2] = o1
+        notifyItemMoved(pos1, pos2)
+        if (selectedPlayer != null) {
+            selectedIndex = data.indexOf(selectedPlayer)
+        }
     }
 }
 
