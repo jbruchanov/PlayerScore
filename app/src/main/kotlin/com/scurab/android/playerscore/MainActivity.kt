@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.support.v7.widget.helper.ItemTouchUIUtil
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
@@ -63,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+        input.filters = arrayOf(ScoreInputFilter())
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
             private var selectedPlayer : Player? = null
@@ -85,8 +85,16 @@ class MainActivity : AppCompatActivity() {
     fun onActionGo(textView: TextView) {
         val selectedPlayer = adapter.selectedPlayer()
         if (selectedPlayer != null) {
-            val int = textView.text.toString().toIntOrNull() ?: 0
-            if (int !in 1..299 && textView.text.isNotEmpty()) {//min value is 0 or 300
+            val input = textView.text.toString()
+            if(input.isNotEmpty()) {
+                var int = input.toIntOrNull() ?: 0
+                when (int) {
+                    in 1..99 -> int *= 100
+                    else -> int
+                }
+                if (int in 1..299 || ((int / 100) * 100) != int) {
+                    return
+                }
                 selectedPlayer.score += int
                 textView.text = ""
                 if (selectedPlayer.lastZeros() == 3) {
