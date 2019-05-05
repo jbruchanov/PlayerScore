@@ -3,7 +3,6 @@ package com.scurab.android.playerscore
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import java.text.DecimalFormat
@@ -84,10 +84,6 @@ class PlayersAdapter(val input: EditText) : RecyclerView.Adapter<PlayerViewHolde
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         layoutInflater = LayoutInflater.from(recyclerView.context)
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView?) {
-        super.onDetachedFromRecyclerView(recyclerView)
     }
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
