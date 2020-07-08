@@ -49,17 +49,17 @@ dependencies {
     def butterKnife = "10.1.0"
     def assertJ = "1.1.1"
 
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "com.google.android.material:material:1.1.0"
 //    implementation "androidx.legacy:legacy-support-v4:1.0.0"
 
     kapt "com.jakewharton:butterknife-compiler:$butterKnife"
     implementation "com.jakewharton:butterknife:$butterKnife"
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
 
-    implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true
     }
 
@@ -68,6 +68,6 @@ dependencies {
     testImplementation "com.squareup.assertj:assertj-android-design:$assertJ"
     testImplementation "com.squareup.assertj:assertj-android-support-v4:$assertJ"
     testImplementation "org.robolectric:robolectric:3.6.1"
-    testImplementation "org.mockito:mockito-core:2.11.0"
+    testImplementation "org.mockito:mockito-core:2.25.0"
 
 }
