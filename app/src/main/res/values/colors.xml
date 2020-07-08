@@ -3,13 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff8400</color>
+    <color name="white">#fff</color>
 
-    <color name="row_selected">#20FFFFFF</color>
-    <color name="row_pressed">#40FFFFFF</color>
+    <color name="row_selected">#40FFFFFF</color>
+    <color name="row_pressed">#90FFFFFF</color>
     <color name="red">#FF0000</color>
 
-    <color name="score_low">#888</color>
-    <color name="score_mid">#AAA</color>
+    <color name="score_low">#999</color>
+    <color name="score_mid">#BBB</color>
     <color name="score_mid2">#CCC</color>
     <color name="score_winning">#FFF</color>
 

@@ -3,9 +3,6 @@ package com.scurab.android.playerscore
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +10,12 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.crashlytics.android.Crashlytics
@@ -47,8 +49,9 @@ class MainActivity : AppCompatActivity() {
         ButterKnife.bind(this)
 
         adapter = PlayersAdapter(input)
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+        (recyclerView.itemAnimator as? SimpleItemAnimator?)?.supportsChangeAnimations = false
 
         sharedPrefs.getString(Players, null)?.let {
             val items = gson.fromJson<List<Player>>(it, object : TypeToken<List<Player>>() {}.type)
